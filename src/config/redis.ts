@@ -7,6 +7,7 @@ export const redisConfig = {
   host: env.REDIS_HOST,
   port: env.REDIS_PORT,
   ...(env.REDIS_PASSWORD && { password: env.REDIS_PASSWORD }),
+  tls: env.NODE_ENV === 'production' ? {} : undefined,
   maxRetriesPerRequest: 3,
   retryStrategy: (times: number): number | null => {
     if (times > 10) {
