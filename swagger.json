@@ -1,0 +1,78 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Doc Generator API",
+    "version": "1.0.0",
+    "description": "API de génération de documents PDF en batch"
+  },
+  "servers": [{ "url": "http://localhost:3000" }],
+  "paths": {
+    "/api/documents/batch": {
+      "post": {
+        "summary": "Créer un batch de documents",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userIds": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "example": ["user-1", "user-2", "user-3"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": { "description": "Batch créé et mis en queue" }
+        }
+      }
+    },
+    "/api/documents/batch/{batchId}": {
+      "get": {
+        "summary": "Statut d'un batch",
+        "parameters": [{
+          "name": "batchId",
+          "in": "path",
+          "required": true,
+          "schema": { "type": "string" }
+        }],
+        "responses": {
+          "200": { "description": "Statut du batch" },
+          "404": { "description": "Batch non trouvé" }
+        }
+      }
+    },
+    "/api/documents/{documentId}": {
+      "get": {
+        "summary": "Infos d'un document",
+        "parameters": [{
+          "name": "documentId",
+          "in": "path",
+          "required": true,
+          "schema": { "type": "string" }
+        }],
+        "responses": {
+          "200": { "description": "Document trouvé" },
+          "404": { "description": "Document non trouvé" }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health check",
+        "responses": { "200": { "description": "Service healthy" } }
+      }
+    },
+    "/metrics": {
+      "get": {
+        "summary": "Métriques Prometheus",
+        "responses": { "200": { "description": "Métriques au format Prometheus" } }
+      }
+    }
+  }
+}
